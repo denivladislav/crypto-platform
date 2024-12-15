@@ -1,5 +1,7 @@
 # CryptoPlatform
 
+[![CI](https://github.com/denivladislav/crypto-platform/actions/workflows/CI.yml/badge.svg)](https://github.com/denivladislav/crypto-platform/actions/workflows/CI.yml/badge.svg)
+
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.1.3.
 
 ## Development server
