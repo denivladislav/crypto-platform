@@ -7,7 +7,10 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "lint": "ng lint",
+    "lint:ts": "eslint 'src/**/*.ts'",
+    "lint:styles": "stylelint 'src/**/*.{css,scss}'",
+    "lint:templates": "htmlhint 'src/**/*.html'",
+    "lint": "npm run lint:ts && npm run lint:styles && npm run lint:templates",
     "prepare": "husky install"
   },
   "lint-staged": {
@@ -16,6 +19,9 @@
     ],
     "*.{css,scss}": [
       "stylelint --fix"
+    ],
+    "*.html": [
+      "htmlhint"
     ]
   },
   "private": true,
@@ -28,6 +34,7 @@
     "@angular/platform-browser": "^18.1.0",
     "@angular/platform-browser-dynamic": "^18.1.0",
     "@angular/router": "^18.1.0",
+    "@ngrx/store": "^18.1.1",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.14.3"
@@ -41,6 +48,7 @@
     "eslint": "^9.16.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-prettier": "^5.2.1",
+    "htmlhint": "^1.1.4",
     "husky": "^8.0.0",
     "jasmine-core": "~5.1.0",
     "karma": "~6.4.0",

@@ -39,12 +39,4 @@ module.exports = tseslint.config(
       "eslintPluginPrettier/prettier": ["error"],
     },
   },
-  {
-    files: ["**/*.html"],
-    extends: [
-      ...angular.configs.templateRecommended,
-      ...angular.configs.templateAccessibility,
-    ],
-    rules: {},
-  }
 );
