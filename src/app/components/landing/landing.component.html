@@ -1,3 +1,23 @@
-<p>landing works!</p>
-
-<router-outlet></router-outlet>
+<main>
+    <div class="app-container">
+        <aside class="app-container__sidebar">
+            <div class="app-container__sidebar-links">
+                @for (route of routes; track route) {
+                    <a
+                        mat-button
+                        [routerLink]="'/' + route.path"
+                        [ngClass]="{
+                            'app-container__sidebar-link': true,
+                            'app-container__sidebar-link--selected': getIsRouteSelected(route.path)
+                        }"
+                    >{{ capitalize(route.path) }}</a>
+                }
+            </div>
+        </aside>
+        <div class="app-container__content-wrapper">
+            <div class="app-container__content">
+                <router-outlet></router-outlet>
+            </div>
+        </div>
+    </div>
+</main>

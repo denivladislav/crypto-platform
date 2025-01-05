@@ -1,11 +1,33 @@
+import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Router, RouterLink, RouterOutlet } from '@angular/router';
+import { capitalize } from '../../utils';
+import { ROUTE_TOKENS } from '../../app.routes';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
     selector: 'app-landing',
     standalone: true,
-    imports: [RouterOutlet],
+    imports: [CommonModule, RouterLink, RouterOutlet, RouterOutlet, MatButtonModule],
     templateUrl: './landing.component.html',
     styleUrl: './landing.component.scss',
 })
-export class LandingComponent {}
+export class LandingComponent {
+    public routeTokens = Object.values(ROUTE_TOKENS);
+
+    public routes = this.routeTokens.map((route) => ({
+        path: route,
+    }));
+
+    constructor(private _router: Router) {}
+
+    public get currentTab(): string | undefined {
+        return this._router.url.split('/').find((path) => (this.routeTokens as string[]).includes(path));
+    }
+
+    public getIsRouteSelected(route: string): boolean {
+        return this.currentTab === route;
+    }
+
+    public capitalize = capitalize;
+}
