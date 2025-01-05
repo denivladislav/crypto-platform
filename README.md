@@ -1,6 +1,8 @@
 # CryptoPlatform
 
 [![CI](https://github.com/denivladislav/crypto-platform/actions/workflows/CI.yml/badge.svg)](https://github.com/denivladislav/crypto-platform/actions/workflows/CI.yml/badge.svg)
+[![Maintainability](https://api.codeclimate.com/v1/badges/a7e2c9040819c4047121/maintainability)](https://codeclimate.com/github/denivladislav/crypto-platform/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/a7e2c9040819c4047121/test_coverage)](https://codeclimate.com/github/denivladislav/crypto-platform/test_coverage)
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.1.3.
 
