@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    {
+      "source": "/currenciesApi/:path*",
+      "destination": "https://pro-api.coinmarketcap.com/:path*"
+    }
+  ]
+}

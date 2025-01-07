@@ -20,6 +20,8 @@ jobs:
           npm run build
 
       - name: lint
+        env:
+          API_KEY: ${{ secrets.API_KEY }}
         run: |
           npm run lint
 

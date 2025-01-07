@@ -3,8 +3,8 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
-    "build": "ng build",
+    "start": "node -r dotenv/config mynode.js && ng serve",
+    "build": "node -r dotenv/config mynode.js && ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "test-coverage": "ng test --no-watch --code-coverage --browsers ChromeHeadless",
@@ -37,7 +37,11 @@
     "@angular/platform-browser": "^18.1.0",
     "@angular/platform-browser-dynamic": "^18.1.0",
     "@angular/router": "^18.1.0",
+    "@ngrx/effects": "^18.1.1",
+    "@ngrx/operators": "^19.0.0",
+    "@ngrx/signals": "^18.0.0",
     "@ngrx/store": "^18.1.1",
+    "dotenv": "^16.4.7",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.14.3"

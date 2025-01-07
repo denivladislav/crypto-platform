@@ -65,10 +65,12 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "crypto-platform:build:production"
+              "buildTarget": "crypto-platform:build:production",
+              "proxyConfig": "vercel.json"
             },
             "development": {
-              "buildTarget": "crypto-platform:build:development"
+              "buildTarget": "crypto-platform:build:development",
+              "proxyConfig": "proxy.conf.json"
             }
           },
           "defaultConfiguration": "development"
