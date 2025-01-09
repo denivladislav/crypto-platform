@@ -1,1 +1,23 @@
-// tbd
+:host {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.watchlist-wrapper {
+    box-shadow: 0 0 10px 5px lightgrey;
+}
+
+.mat-mdc-header-row .mat-mdc-header-cell {
+    border-bottom: 1px solid lightgrey;
+}
+
+.mat-mdc-row .mat-mdc-cell {
+    border-bottom: 1px solid transparent;
+    border-top: 1px solid transparent;
+    cursor: pointer;
+}
+
+.mat-mdc-row:hover .mat-mdc-cell {
+    border-color: #ee82ee;
+}

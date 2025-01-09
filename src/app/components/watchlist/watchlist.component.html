@@ -1,3 +1,21 @@
-<p>watchlist works!</p>
+<app-loading-spinner *ngIf="store.isLoading()"></app-loading-spinner>
 
-<button (click)="printAllCurrencies()">Click me</button>
+<div [hidden]="store.isLoading()" class="watchlist-wrapper">
+    <table mat-table matSort [dataSource]="dataSource">
+
+        @for (column of currenciesDataColumns; track column) {
+            <ng-container matColumnDef="{{column}}">
+                <th mat-header-cell mat-sort-header *matHeaderCellDef> {{column | underscoreToNormalCase | capitalize }} </th>
+                <td mat-cell *matCellDef="let element"> {{transformValue(column, element[column])}} </td>
+            </ng-container>
+        }
+
+        <tr mat-header-row *matHeaderRowDef="currenciesDataColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: currenciesDataColumns;"></tr>
+    </table>
+
+    <mat-paginator
+        [pageSizeOptions]="[10, 20]"
+        showFirstLastButtons
+    ></mat-paginator>
+</div>
