@@ -1,14 +1,14 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { Router, RouterLink, RouterOutlet } from '@angular/router';
-import { capitalize } from '../../utils';
 import { ROUTE_TOKENS } from '../../app.routes';
 import { MatButtonModule } from '@angular/material/button';
+import { CapitalizePipe } from '../../pipes/capitalize';
 
 @Component({
     selector: 'app-landing',
     standalone: true,
-    imports: [CommonModule, RouterLink, RouterOutlet, RouterOutlet, MatButtonModule],
+    imports: [CommonModule, RouterLink, RouterOutlet, RouterOutlet, MatButtonModule, CapitalizePipe],
     templateUrl: './landing.component.html',
     styleUrl: './landing.component.scss',
 })
@@ -28,6 +28,4 @@ export class LandingComponent {
     public getIsRouteSelected(route: string): boolean {
         return this.currentTab === route;
     }
-
-    public capitalize = capitalize;
 }

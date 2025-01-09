@@ -10,7 +10,7 @@
                             'app-container__sidebar-link': true,
                             'app-container__sidebar-link--selected': getIsRouteSelected(route.path)
                         }"
-                    >{{ capitalize(route.path) }}</a>
+                    >{{ route.path | capitalize }}</a>
                 }
             </div>
         </aside>
