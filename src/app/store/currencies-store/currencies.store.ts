@@ -4,18 +4,15 @@ import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { distinctUntilChanged, pipe, switchMap, tap } from 'rxjs';
 import { tapResponse } from '@ngrx/operators';
 import { CurrenciesService, Currency } from '../../services/currencies-service';
-import { MatTableDataSource } from '@angular/material/table';
 
 interface CurrenciesState {
     currencies: Currency[];
     isLoading: boolean;
-    dataSource: MatTableDataSource<Currency>;
 }
 
 const initialState: CurrenciesState = {
     currencies: [],
     isLoading: false,
-    dataSource: new MatTableDataSource<Currency>([]),
 };
 
 export const CurrenciesStore = signalStore(

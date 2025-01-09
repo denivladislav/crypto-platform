@@ -1,8 +1,9 @@
 import { HttpClient } from '@angular/common/http';
-import { inject, Injectable } from '@angular/core';
+import { DestroyRef, inject, Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
-import { Currency, GenericResponse } from './currencies.types';
+import { Currency, CurrencyRaw, GenericResponse } from './currencies.types';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 const LIMIT = 50;
 
@@ -11,12 +12,13 @@ const LIMIT = 50;
 })
 export class CurrenciesService {
     private _http = inject(HttpClient);
+    private _destroyRef = inject(DestroyRef);
     private _apiKey = environment.API_KEY;
     private _baseUrl = '/currenciesApi';
 
     getCurrencies(): Observable<Currency[]> {
         return this._http
-            .get<GenericResponse<Currency[]>>(`${this._baseUrl}/v1/cryptocurrency/listings/latest`, {
+            .get<GenericResponse<CurrencyRaw[]>>(`${this._baseUrl}/v1/cryptocurrency/listings/latest`, {
                 headers: {
                     'X-CMC_PRO_API_KEY': this._apiKey || '',
                 },
@@ -24,6 +26,15 @@ export class CurrenciesService {
                     limit: LIMIT,
                 },
             })
-            .pipe(map((response) => response.data));
+            .pipe(
+                takeUntilDestroyed(this._destroyRef),
+                map(({ data }) =>
+                    data.map((currencyRaw) => ({
+                        ...currencyRaw,
+                        price: currencyRaw.quote['USD'].price,
+                        market_cap: currencyRaw.quote['USD'].market_cap,
+                    })),
+                ),
+            );
     }
 }

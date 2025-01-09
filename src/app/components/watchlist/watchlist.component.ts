@@ -1,14 +1,14 @@
-import { AfterViewInit, Component, effect, inject, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, effect, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { CurrenciesStore } from '../../store/currencies-store';
 import { LoadingSpinnerComponent } from '../loading-spinner/loading-spinner.component';
 import { CommonModule, CurrencyPipe } from '@angular/common';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { CurrenciesPreparedDatum } from '../../services/currencies-service/currencies.types';
 import { ShortenNumberPipe } from '../../pipes/shorten-number';
 import { CapitalizePipe } from '../../pipes/capitalize';
 import { UnderscoreToNormalCasePipe } from '../../pipes/underscore-to-normal-case';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
+import { Currency } from '../../services/currencies-service';
 
 @Component({
     selector: 'app-watchlist',
@@ -26,24 +26,27 @@ import { MatSort, MatSortModule } from '@angular/material/sort';
     templateUrl: './watchlist.component.html',
     styleUrl: './watchlist.component.scss',
 })
-export class WatchlistComponent implements OnInit, AfterViewInit {
+export class WatchlistComponent implements OnInit, AfterViewInit, OnDestroy {
     private _currencyPipe = inject(CurrencyPipe);
     private _shortenNumberPipe = inject(ShortenNumberPipe);
+    private _intervalId: ReturnType<typeof setInterval> | undefined;
+    private _updateTime = 30000;
+
     readonly store = inject(CurrenciesStore);
     public currenciesDataColumns = ['name', 'symbol', 'price', 'circulating_supply', 'market_cap'];
-    public dataSource = new MatTableDataSource<CurrenciesPreparedDatum>([]);
+    public dataSource = new MatTableDataSource<Currency>([]);
 
     @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator | undefined;
     @ViewChild(MatSort) sort: MatSort | undefined;
 
     constructor() {
         effect(() => {
-            this.dataSource.data = this.store.currencies().map((currency) => ({
-                ...currency,
-                price: currency.quote['USD'].price,
-                market_cap: currency.quote['USD'].market_cap,
-            }));
+            this.dataSource.data = this.store.currencies();
         });
+    }
+
+    private load() {
+        this.store.loadByQuery('');
     }
 
     public transformValue(column: string, value: string | number) {
@@ -60,10 +63,21 @@ export class WatchlistComponent implements OnInit, AfterViewInit {
 
     public ngOnInit(): void {
         this.store.loadByQuery('');
+        this._intervalId = setInterval(() => {
+            this.store.loadByQuery('');
+        }, this._updateTime);
     }
 
     public ngAfterViewInit(): void {
-        this.dataSource.paginator = this.paginator!;
-        this.dataSource.sort = this.sort!;
+        if (!this.paginator || !this.sort) {
+            return;
+        }
+
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+    }
+
+    public ngOnDestroy(): void {
+        clearInterval(this._intervalId);
     }
 }

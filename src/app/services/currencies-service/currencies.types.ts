@@ -8,7 +8,7 @@ export interface QuoteData {
     market_cap: number;
 }
 
-export interface Currency {
+export interface CurrencyRaw {
     id: number;
     name: string;
     symbol: string;
@@ -16,6 +16,4 @@ export interface Currency {
     quote: Record<string, QuoteData>;
 }
 
-export type CurrenciesPreparedDatum = Currency & QuoteData;
-
-export type CurrenciesData = CurrenciesPreparedDatum[];
+export type Currency = Omit<CurrencyRaw, 'quote'> & QuoteData;
