@@ -11,6 +11,11 @@ export interface QuoteData {
 export interface Currency {
     id: number;
     name: string;
+    symbol: string;
     circulating_supply: number;
     quote: Record<string, QuoteData>;
 }
+
+export type CurrenciesPreparedDatum = Currency & QuoteData;
+
+export type CurrenciesData = CurrenciesPreparedDatum[];
