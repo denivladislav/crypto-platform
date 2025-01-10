@@ -30,7 +30,7 @@ export class WatchlistComponent implements OnInit, AfterViewInit, OnDestroy {
     private _currencyPipe = inject(CurrencyPipe);
     private _shortenNumberPipe = inject(ShortenNumberPipe);
     private _intervalId: ReturnType<typeof setInterval> | undefined;
-    private _updateTime = 30000;
+    private _updateTime = 120000;
 
     readonly store = inject(CurrenciesStore);
     public currenciesDataColumns = ['name', 'symbol', 'price', 'circulating_supply', 'market_cap'];
