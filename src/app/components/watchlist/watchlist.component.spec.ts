@@ -55,7 +55,8 @@ describe('WatchlistComponent', () => {
         fixture = TestBed.createComponent(WatchlistComponent);
         component = fixture.componentInstance;
 
-        fixture.detectChanges();
+        TestBed.flushEffects();
+        fixture.autoDetectChanges();
     });
 
     it('should create', () => {
@@ -63,8 +64,6 @@ describe('WatchlistComponent', () => {
     });
 
     it('should render the table with data', () => {
-        TestBed.flushEffects();
-        fixture.detectChanges();
         const rows = fixture.nativeElement.querySelectorAll('tr.mat-mdc-row');
         expect(rows.length).toBe(mockData.length);
 
