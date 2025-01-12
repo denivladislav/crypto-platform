@@ -45,11 +45,7 @@ export class WatchlistComponent implements OnInit, AfterViewInit, OnDestroy {
         });
     }
 
-    private load() {
-        this.store.loadByQuery('');
-    }
-
-    public transformValue(column: string, value: string | number) {
+    public transformValue(column: string, value: string | number): string | null {
         switch (column) {
             case 'price':
                 return this._currencyPipe.transform(value, 'USD', 'symbol', '1.2-2');
@@ -57,7 +53,7 @@ export class WatchlistComponent implements OnInit, AfterViewInit, OnDestroy {
             case 'market_cap':
                 return this._shortenNumberPipe.transform(value as number);
             default:
-                return value;
+                return String(value);
         }
     }
 
