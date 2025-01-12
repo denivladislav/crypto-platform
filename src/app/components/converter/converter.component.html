@@ -1,1 +1,68 @@
-<p>converter works!</p>
+<app-loading-spinner *ngIf="store.isLoading(); else content"></app-loading-spinner>
+
+<ng-template #content>
+    <div class="converter">
+        <form #formDirective="ngForm" [formGroup]="converterForm" class="converter-form">
+            <mat-form-field id="amount" class="converter-form__formfield-input">
+                <mat-label>Amount:</mat-label>
+                <input
+                    matInput
+                    [formControl]="converterForm.controls.currencyFromAmount"
+                    type="number"
+                    name="amountInput"
+                    (blur)="onChange()"
+                />
+                @if (converterForm.controls.currencyFromAmount.hasError('required') || converterForm.controls.currencyFromAmount.hasError('min')) {
+                    <mat-error>Must be positive number</mat-error>
+                }
+            </mat-form-field>
+            <div class="converter-form__from-to-wrapper">
+                <mat-form-field id="currencyFrom" class="converter-form__formfield-autocomplete">
+                    <mat-label>From:</mat-label>
+                    <input
+                        matInput
+                        type="text"
+                        name="currencyFromInput"
+                        [formControl]="converterForm.controls.currencyFrom"
+                        [matAutocomplete]="currencyFrom"
+                        (selectionchange)="onChange()"
+                    />
+                    <mat-autocomplete #currencyFrom="matAutocomplete" ngDefaultControl>
+                        @for (option of currencyFromOptions$ | async; track option) {
+                            <mat-option [value]="option">{{option}}</mat-option>
+                        }
+                    </mat-autocomplete>
+                    @if (converterForm.controls.currencyFrom.hasError('required') || converterForm.controls.currencyFrom.hasError('notFound')) {
+                        <mat-error>Invalid currency</mat-error>
+                    }
+                </mat-form-field>
+                <button mat-icon-button (click)="swapCurrencies()" class="converter-form__swap-currencies" id="swapCurrencies">
+                    <mat-icon>swap_horiz</mat-icon>
+                </button>
+                <mat-form-field id="currencyTo" class="converter-form__formfield-autocomplete">
+                    <mat-label>To:</mat-label>
+                    <input
+                        matInput
+                        type="text"
+                        name="currencyToInput"
+                        [formControl]="converterForm.controls.currencyTo"
+                        [matAutocomplete]="currencyTo"
+                        (selectionchange)="onChange()"
+                    />
+                    <mat-autocomplete #currencyTo="matAutocomplete" ngDefaultControl>
+                        @for (option of currencyToOptions$ | async; track option) {
+                            <mat-option [value]="option">{{ option }}</mat-option>
+                        }
+                    </mat-autocomplete>
+                    @if (converterForm.controls.currencyTo.hasError('required') || converterForm.controls.currencyTo.hasError('notFound')) {
+                        <mat-error>Invalid currency</mat-error>
+                    }
+                </mat-form-field>
+            </div>
+        </form>
+
+        @if (resultString) {
+            <div id="resultString">{{ resultString }}</div>
+        }
+    </div>
+</ng-template>
