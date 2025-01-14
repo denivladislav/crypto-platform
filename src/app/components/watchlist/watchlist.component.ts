@@ -9,18 +9,26 @@ import { UnderscoreToNormalCasePipe } from '../../pipes/underscore-to-normal-cas
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { Currency } from '../../services/currencies-service';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { SharedModule } from '../../modules/shared';
+import { CustomFilterComponent } from '../../ui/custom-filter/custom-filter.component';
 
 @Component({
     selector: 'app-watchlist',
     standalone: true,
     imports: [
         CommonModule,
+        SharedModule,
         LoadingSpinnerComponent,
         MatTableModule,
         MatPaginatorModule,
         MatSortModule,
+        MatFormFieldModule,
+        MatInputModule,
         UnderscoreToNormalCasePipe,
         CapitalizePipe,
+        CustomFilterComponent,
     ],
     providers: [CurrenciesStore, CurrencyPipe, ShortenNumberPipe],
     templateUrl: './watchlist.component.html',
@@ -57,11 +65,19 @@ export class WatchlistComponent implements OnInit, AfterViewInit, OnDestroy {
         }
     }
 
+    public applyFilter(value: string) {
+        this.dataSource.filter = value.trim().toLowerCase();
+    }
+
     public ngOnInit(): void {
         this.store.loadByQuery('');
         this._intervalId = setInterval(() => {
             this.store.loadByQuery('');
         }, this._updateTime);
+
+        this.dataSource.filterPredicate = (data: Currency, filter: string) => {
+            return data.name.toLowerCase().includes(filter);
+        };
     }
 
     public ngAfterViewInit(): void {

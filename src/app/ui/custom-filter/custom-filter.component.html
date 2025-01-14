@@ -1,0 +1,11 @@
+<mat-form-field (appearance)="appearance">
+    <mat-label>{{ label }}</mat-label>
+    <input
+        #customFilter
+        matInput
+        (type)="type"
+        (placeholder)="placeholder"
+        (keydown.enter)="customFilter.blur()"
+        (blur)="onBlur(customFilter.value)"
+    />
+</mat-form-field>

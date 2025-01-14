@@ -5,7 +5,7 @@ import { ROUTE_TOKENS } from '../../app.routes';
 import { MatButtonModule } from '@angular/material/button';
 import { CapitalizePipe } from '../../pipes/capitalize';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { ThemeService } from '../../services/theme-service/theme.service';
+import { ThemeService } from '../../services/theme-service';
 
 @Component({
     selector: 'app-landing',

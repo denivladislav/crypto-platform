@@ -10,6 +10,7 @@
                     [formControl]="converterForm.controls.currencyFromAmount"
                     type="number"
                     name="amountInput"
+                    placeholder="Type amount"
                     (blur)="onChange()"
                 />
                 @if (converterForm.controls.currencyFromAmount.hasError('required') || converterForm.controls.currencyFromAmount.hasError('min')) {
@@ -23,6 +24,7 @@
                         matInput
                         type="text"
                         name="currencyFromInput"
+                        placeholder="BTC"
                         [formControl]="converterForm.controls.currencyFrom"
                         [matAutocomplete]="currencyFrom"
                         (selectionchange)="onChange()"
@@ -45,6 +47,7 @@
                         matInput
                         type="text"
                         name="currencyToInput"
+                        placeholder="ETH"
                         [formControl]="converterForm.controls.currencyTo"
                         [matAutocomplete]="currencyTo"
                         (selectionchange)="onChange()"
