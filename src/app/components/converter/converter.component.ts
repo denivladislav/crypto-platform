@@ -1,12 +1,12 @@
 import { Component, effect, inject, OnInit } from '@angular/core';
-import { CurrenciesStore } from '../../store/currencies-store';
+import { CurrenciesStore } from '../../store';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
-import { Currency } from '../../services/currencies-service';
-import { GetPreciseNumberPipe } from '../../pipes/get-precise-number';
+import { Currency } from '../../services';
+import { GetPreciseNumberPipe } from '../../pipes';
 import { LoadingSpinnerComponent } from '../loading-spinner/loading-spinner.component';
 import { EMPTY, map, Observable, startWith } from 'rxjs';
 import { MatIconModule } from '@angular/material/icon';

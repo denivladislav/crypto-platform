@@ -1,18 +1,16 @@
 import { AfterViewInit, Component, effect, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { CurrenciesStore } from '../../store/currencies-store';
+import { CurrenciesStore } from '../../store';
 import { LoadingSpinnerComponent } from '../loading-spinner/loading-spinner.component';
 import { CommonModule, CurrencyPipe } from '@angular/common';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { ShortenNumberPipe } from '../../pipes/shorten-number';
-import { CapitalizePipe } from '../../pipes/capitalize';
-import { UnderscoreToNormalCasePipe } from '../../pipes/underscore-to-normal-case';
+import { ShortenNumberPipe, UnderscoreToNormalCasePipe, CapitalizePipe } from '../../pipes';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
-import { Currency } from '../../services/currencies-service';
+import { Currency } from '../../services';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { SharedModule } from '../../modules/shared';
-import { CustomFilterComponent } from '../../ui/custom-filter/custom-filter.component';
+import { CustomFilterComponent } from '../../ui';
+import { SharedModule } from '../../modules';
 
 @Component({
     selector: 'app-watchlist',
@@ -76,7 +74,7 @@ export class WatchlistComponent implements OnInit, AfterViewInit, OnDestroy {
         }, this._updateTime);
 
         this.dataSource.filterPredicate = (data: Currency, filter: string) => {
-            return data.name.toLowerCase().includes(filter);
+            return data.name.toLowerCase().includes(filter) || data.symbol.toLowerCase().includes(filter);
         };
     }
 

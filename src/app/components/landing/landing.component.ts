@@ -3,9 +3,9 @@ import { Component } from '@angular/core';
 import { Router, RouterLink, RouterOutlet } from '@angular/router';
 import { ROUTE_TOKENS } from '../../app.routes';
 import { MatButtonModule } from '@angular/material/button';
-import { CapitalizePipe } from '../../pipes/capitalize';
+import { CapitalizePipe } from '../../pipes';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { ThemeService } from '../../services/theme-service';
+import { ThemeService } from '../../services';
 
 @Component({
     selector: 'app-landing',

@@ -3,7 +3,7 @@
 <ng-template #content>
     <div class="converter">
         <form #formDirective="ngForm" [formGroup]="converterForm" class="converter-form">
-            <mat-form-field id="amount" class="converter-form__formfield-input">
+            <mat-form-field appearance="outline" id="amount" class="converter-form__formfield-input">
                 <mat-label>Amount:</mat-label>
                 <input
                     matInput
@@ -14,11 +14,11 @@
                     (blur)="onChange()"
                 />
                 @if (converterForm.controls.currencyFromAmount.hasError('required') || converterForm.controls.currencyFromAmount.hasError('min')) {
-                    <mat-error>Must be positive number</mat-error>
+                    <mat-error>Must be natural number</mat-error>
                 }
             </mat-form-field>
             <div class="converter-form__from-to-wrapper">
-                <mat-form-field id="currencyFrom" class="converter-form__formfield-autocomplete">
+                <mat-form-field appearance="outline" id="currencyFrom" class="converter-form__formfield-autocomplete">
                     <mat-label>From:</mat-label>
                     <input
                         matInput
@@ -41,7 +41,7 @@
                 <button mat-icon-button (click)="swapCurrencies()" class="converter-form__swap-currencies" id="swapCurrencies">
                     <mat-icon>swap_horiz</mat-icon>
                 </button>
-                <mat-form-field id="currencyTo" class="converter-form__formfield-autocomplete">
+                <mat-form-field appearance="outline" id="currencyTo" class="converter-form__formfield-autocomplete">
                     <mat-label>To:</mat-label>
                     <input
                         matInput

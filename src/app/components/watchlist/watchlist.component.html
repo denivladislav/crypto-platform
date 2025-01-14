@@ -1,29 +1,31 @@
 <app-loading-spinner *ngIf="store.isLoading()"></app-loading-spinner>
 
-<app-custom-filter
-    (blurEvent)="applyFilter($event)"
-></app-custom-filter>
+@if (!store.isLoading()) {
+    <app-custom-filter
+        (blurEvent)="applyFilter($event)"
+    ></app-custom-filter>
+}
 
-@if(dataSource.filteredData.length) {
-    <div [hidden]="store.isLoading()" class="watchlist-wrapper">
-        <table mat-table matSort [dataSource]="dataSource">
-            
-            @for (column of currenciesDataColumns; track column) {
-                <ng-container matColumnDef="{{column}}">
-                    <th mat-header-cell mat-sort-header *matHeaderCellDef> {{column | underscoreToNormalCase | capitalize }} </th>
-                    <td mat-cell *matCellDef="let element"> {{transformValue(column, element[column])}} </td>
-                </ng-container>
-            }
-    
-            <tr mat-header-row *matHeaderRowDef="currenciesDataColumns"></tr>
-            <tr mat-row *matRowDef="let row; columns: currenciesDataColumns;"></tr>
-        </table>
-
-        <mat-paginator
-            [pageSizeOptions]="[10, 20]"
-            showFirstLastButtons
-        ></mat-paginator>
-    </div>
-} @else {
+@if(!store.isLoading() && dataSource.filteredData.length === 0) {
     <div>No results found. Try updating the filter or reloading the page</div>
 }
+
+<div [hidden]="store.isLoading() || dataSource.filteredData.length === 0" class="watchlist-wrapper">
+    <table mat-table matSort [dataSource]="dataSource">
+        
+        @for (column of currenciesDataColumns; track column) {
+            <ng-container matColumnDef="{{column}}">
+                <th mat-header-cell mat-sort-header *matHeaderCellDef> {{column | underscoreToNormalCase | capitalize }} </th>
+                <td mat-cell *matCellDef="let element"> {{transformValue(column, element[column])}} </td>
+            </ng-container>
+        }
+
+        <tr mat-header-row *matHeaderRowDef="currenciesDataColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: currenciesDataColumns;"></tr>
+    </table>
+
+    <mat-paginator
+        [pageSizeOptions]="[10, 20]"
+        showFirstLastButtons
+    ></mat-paginator>
+</div>

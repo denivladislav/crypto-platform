@@ -3,7 +3,7 @@ import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { distinctUntilChanged, pipe, switchMap, tap } from 'rxjs';
 import { tapResponse } from '@ngrx/operators';
-import { CurrenciesService, Currency } from '../../services/currencies-service';
+import { CurrenciesService, Currency } from '../../services';
 
 interface CurrenciesState {
     currencies: Currency[];
