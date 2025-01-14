@@ -3,18 +3,23 @@
         <aside class="app-container__sidebar">
             <div class="app-container__sidebar-links">
                 @for (route of routes; track route) {
-                    <a
+                    <a  
                         mat-button
                         [routerLink]="'/' + route.path"
                         [ngClass]="{
                             'app-container__sidebar-link': true,
-                            'app-container__sidebar-link--selected': getIsRouteSelected(route.path)
+                            'app-container__sidebar-link--selected': getIsRouteSelected(route.path),
                         }"
-                    >{{ route.path | capitalize }}</a>
+                    >
+                        {{ route.path | capitalize }}
+                    </a>
                 }
             </div>
         </aside>
         <div class="app-container__content-wrapper">
+            <div class="app-container__app-bar">
+                <mat-slide-toggle class="app-container__theme-toggle" [checked]="currentTheme === 'light'" (change)="toggleTheme()">{{ currentTheme | capitalize }}</mat-slide-toggle>
+            </div>
             <div class="app-container__content">
                 <router-outlet></router-outlet>
             </div>

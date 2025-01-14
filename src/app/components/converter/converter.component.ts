@@ -109,10 +109,7 @@ export class ConverterComponent implements OnInit {
             (currency) => currency.symbol.toLowerCase() === this.converterForm.value.currencyTo?.toLowerCase(),
         );
 
-        console.log(this.converterForm.value.currencyFrom?.toLocaleLowerCase());
-
         if (!currencyDataFrom) {
-            console.log('passed');
             this.converterForm.controls.currencyFrom.setErrors({ notFound: true });
         }
 
