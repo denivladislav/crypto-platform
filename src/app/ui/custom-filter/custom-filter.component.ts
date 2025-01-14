@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-empty-function */
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { MatFormFieldAppearance, MatFormFieldModule, MatLabel } from '@angular/material/form-field';
+import { MatFormFieldModule, MatLabel } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 
 @Component({
@@ -12,7 +12,6 @@ import { MatInputModule } from '@angular/material/input';
     styleUrl: './custom-filter.component.scss',
 })
 export class CustomFilterComponent {
-    @Input() public appearance: MatFormFieldAppearance = 'outline';
     @Input() public label: MatLabel = 'Filter by currency name';
     @Input() public type = 'text';
     @Input() public placeholder = 'Type currency name';

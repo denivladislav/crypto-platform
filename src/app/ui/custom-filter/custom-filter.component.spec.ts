@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { CustomFilterComponent } from './custom-filter.component';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 describe('CustomFilterComponent', () => {
     let component: CustomFilterComponent;
@@ -8,7 +9,7 @@ describe('CustomFilterComponent', () => {
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
-            imports: [CustomFilterComponent],
+            imports: [CustomFilterComponent, NoopAnimationsModule],
         }).compileComponents();
 
         fixture = TestBed.createComponent(CustomFilterComponent);
