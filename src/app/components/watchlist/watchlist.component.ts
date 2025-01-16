@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, effect, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { CurrenciesStore } from '../../store';
+import { CurrenciesStore, REF_CURRENCIES, RefCurrency } from '../../store';
 import { LoadingSpinnerComponent } from '../loading-spinner/loading-spinner.component';
 import { CommonModule, CurrencyPipe } from '@angular/common';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
@@ -11,6 +11,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { CustomFilterComponent } from '../../ui';
 import { SharedModule } from '../../modules';
+import { MatSelectChange, MatSelectModule } from '@angular/material/select';
 
 @Component({
     selector: 'app-watchlist',
@@ -24,6 +25,7 @@ import { SharedModule } from '../../modules';
         MatSortModule,
         MatFormFieldModule,
         MatInputModule,
+        MatSelectModule,
         UnderscoreToNormalCasePipe,
         CapitalizePipe,
         CustomFilterComponent,
@@ -39,28 +41,42 @@ export class WatchlistComponent implements OnInit, AfterViewInit, OnDestroy {
     private _updateTime = 120000;
 
     readonly store = inject(CurrenciesStore);
+
+    public refCurrencies = REF_CURRENCIES;
     public currenciesDataColumns = ['name', 'symbol', 'price', 'circulating_supply', 'market_cap'];
     public dataSource = new MatTableDataSource<Currency>([]);
+    public refCurrency?: RefCurrency;
 
     @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator | undefined;
     @ViewChild(MatSort) sort: MatSort | undefined;
 
     constructor() {
         effect(() => {
+            this.refCurrency = this.store.refCurrency();
             this.dataSource.data = this.store.currencies();
         });
     }
 
+    public onRefCurrencyChange({ value }: MatSelectChange) {
+        this.store.setRefCurrency(value);
+        this.store.loadByQuery(value);
+    }
+
     public transformValue(column: string, value: string | number): string | null {
-        switch (column) {
-            case 'price':
-                return this._currencyPipe.transform(value, 'USD', 'symbol', '1.2-2');
-            case 'circulating_supply':
-            case 'market_cap':
-                return this._shortenNumberPipe.transform(value as number);
-            default:
-                return String(value);
+        if (column === 'price') {
+            return this._currencyPipe.transform(value, this.refCurrency, 'symbol', '1.2-2');
         }
+        if (column === 'market_cap') {
+            const shortenedNumberString = this._shortenNumberPipe.transform(value as number);
+            const shortenedNumber = Number(shortenedNumberString.slice(0, -1));
+            const shortener = shortenedNumberString.slice(-1);
+            return `${this._currencyPipe.transform(shortenedNumber, this.refCurrency, 'symbol', '1.2-2')}${shortener}`;
+        }
+        if (column === 'circulating_supply') {
+            return this._shortenNumberPipe.transform(value as number);
+        }
+
+        return String(value);
     }
 
     public applyFilter(value: string) {
@@ -68,9 +84,9 @@ export class WatchlistComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     public ngOnInit(): void {
-        this.store.loadByQuery('');
+        this.store.loadByQuery(this.store.refCurrency);
         this._intervalId = setInterval(() => {
-            this.store.loadByQuery('');
+            this.store.loadByQuery(this.store.refCurrency);
         }, this._updateTime);
 
         this.dataSource.filterPredicate = (data: Currency, filter: string) => {

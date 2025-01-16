@@ -4,6 +4,12 @@
     height: 100%;
 }
 
+.watchlist-filters {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
 .watchlist-wrapper {
     box-shadow: 0 0 10px 5px lightgrey;
 }

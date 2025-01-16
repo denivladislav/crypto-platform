@@ -1,1 +1,1 @@
-export { CurrenciesStore } from './currencies.store';
+export { CurrenciesStore, RefCurrency, REF_CURRENCIES } from './currencies.store';

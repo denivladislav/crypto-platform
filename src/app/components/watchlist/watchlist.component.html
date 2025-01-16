@@ -1,9 +1,20 @@
 <app-loading-spinner *ngIf="store.isLoading()"></app-loading-spinner>
 
 @if (!store.isLoading()) {
-    <app-custom-filter
-        (blurEvent)="applyFilter($event)"
-    ></app-custom-filter>
+    <div class="watchlist-filters">
+        <app-custom-filter
+            (blurEvent)="applyFilter($event)"
+        ></app-custom-filter>
+
+        <mat-form-field appearance="outline">
+            <mat-label>Ref currency</mat-label>
+            <mat-select [(value)]="refCurrency" (selectionChange)="onRefCurrencyChange($event)">
+                @for (refCurrency of refCurrencies; track refCurrency) {
+                    <mat-option [value]="refCurrency">{{ refCurrency }}</mat-option>
+                }
+            </mat-select>
+        </mat-form-field>
+    </div>
 }
 
 @if(!store.isLoading() && dataSource.filteredData.length === 0) {

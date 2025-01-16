@@ -4,6 +4,7 @@ import { map, Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { Currency, CurrencyRaw, GenericResponse } from './currencies.types';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { RefCurrency } from '../../store';
 
 const LIMIT = 50;
 
@@ -16,13 +17,14 @@ export class CurrenciesService {
     private _apiKey = environment.API_KEY;
     private _baseUrl = '/currenciesApi';
 
-    getCurrencies(): Observable<Currency[]> {
+    getCurrencies(refCurrency: RefCurrency): Observable<Currency[]> {
         return this._http
             .get<GenericResponse<CurrencyRaw[]>>(`${this._baseUrl}/v1/cryptocurrency/listings/latest`, {
                 headers: {
                     'X-CMC_PRO_API_KEY': this._apiKey || '',
                 },
                 params: {
+                    convert: refCurrency,
                     limit: LIMIT,
                 },
             })
@@ -31,8 +33,8 @@ export class CurrenciesService {
                 map(({ data }) =>
                     data.map((currencyRaw) => ({
                         ...currencyRaw,
-                        price: currencyRaw.quote['USD'].price,
-                        market_cap: currencyRaw.quote['USD'].market_cap,
+                        price: currencyRaw.quote[refCurrency].price,
+                        market_cap: currencyRaw.quote[refCurrency].market_cap,
                     })),
                 ),
             );

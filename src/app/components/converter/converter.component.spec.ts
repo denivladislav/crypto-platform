@@ -30,6 +30,7 @@ describe('ConverterComponent', () => {
         mockCurrenciesStore = {
             currencies: signal([]),
             isLoading: signal(false),
+            refCurrency: signal('USD'),
             loadByQuery: jasmine.createSpy('loadByQuery').and.callFake(() => {
                 mockCurrenciesStore!.currencies.set(mockData);
             }),
