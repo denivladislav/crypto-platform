@@ -136,7 +136,7 @@ export class ConverterComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.store.loadByQuery(this.store.refCurrency());
+        this.store.loadCurrenciesByQuery(this.store.refCurrency());
         this.currencyFromOptions$ = this.converterForm.controls.currencyFrom.valueChanges.pipe(
             startWith(''),
             map((value) => this._currencyFilter(value || '')),

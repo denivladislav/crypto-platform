@@ -15,11 +15,11 @@ export class CurrenciesService {
     private _http = inject(HttpClient);
     private _destroyRef = inject(DestroyRef);
     private _apiKey = environment.API_KEY;
-    private _baseUrl = '/currenciesApi';
+    private _currenciesBaseUrl = '/currenciesApi';
 
     getCurrencies(refCurrency: RefCurrency): Observable<Currency[]> {
         return this._http
-            .get<GenericResponse<CurrencyRaw[]>>(`${this._baseUrl}/v1/cryptocurrency/listings/latest`, {
+            .get<GenericResponse<CurrencyRaw[]>>(`${this._currenciesBaseUrl}/v1/cryptocurrency/listings/latest`, {
                 headers: {
                     'X-CMC_PRO_API_KEY': this._apiKey || '',
                 },

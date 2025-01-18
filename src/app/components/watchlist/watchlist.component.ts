@@ -59,7 +59,7 @@ export class WatchlistComponent implements OnInit, AfterViewInit, OnDestroy {
 
     public onRefCurrencyChange({ value }: MatSelectChange) {
         this.store.setRefCurrency(value);
-        this.store.loadByQuery(value);
+        this.store.loadCurrenciesByQuery(value);
     }
 
     public transformValue(column: string, value: string | number): string | null {
@@ -84,9 +84,9 @@ export class WatchlistComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     public ngOnInit(): void {
-        this.store.loadByQuery(this.store.refCurrency);
+        this.store.loadCurrenciesByQuery(this.store.refCurrency);
         this._intervalId = setInterval(() => {
-            this.store.loadByQuery(this.store.refCurrency);
+            this.store.loadCurrenciesByQuery(this.store.refCurrency);
         }, this._updateTime);
 
         this.dataSource.filterPredicate = (data: Currency, filter: string) => {

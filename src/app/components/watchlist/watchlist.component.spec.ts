@@ -42,7 +42,7 @@ describe('WatchlistComponent', () => {
             currencies: signal([]),
             isLoading: signal(false),
             refCurrency: signal('USD'),
-            loadByQuery: jasmine.createSpy('loadByQuery').and.callFake(() => {
+            loadCurrenciesByQuery: jasmine.createSpy('loadCurrenciesByQuery').and.callFake(() => {
                 mockCurrenciesStore!.currencies.set(mockData);
             }),
         };

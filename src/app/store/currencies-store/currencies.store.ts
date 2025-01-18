@@ -10,14 +10,14 @@ export type RefCurrency = (typeof REF_CURRENCIES)[number];
 
 interface CurrenciesState {
     currencies: Currency[];
-    isLoading: boolean;
     refCurrency: RefCurrency;
+    isLoading: boolean;
 }
 
 const initialState: CurrenciesState = {
     currencies: [],
-    isLoading: false,
     refCurrency: 'USD',
+    isLoading: false,
 };
 
 export const CurrenciesStore = signalStore(
@@ -26,7 +26,7 @@ export const CurrenciesStore = signalStore(
         setRefCurrency(newRefCurrency: RefCurrency): void {
             patchState(store, () => ({ refCurrency: newRefCurrency }));
         },
-        loadByQuery: rxMethod<RefCurrency>(
+        loadCurrenciesByQuery: rxMethod<RefCurrency>(
             pipe(
                 distinctUntilChanged(),
                 tap(() => patchState(store, { isLoading: true })),
