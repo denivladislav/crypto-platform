@@ -7,14 +7,14 @@ import { WalletService, Asset } from '../../services';
 
 interface WalletState {
     assets: Asset[];
-    deposit: Asset | undefined;
+    balance: Asset | undefined;
     transactions: unknown;
     isLoading: boolean;
 }
 
 const initialState: WalletState = {
     assets: [],
-    deposit: undefined,
+    balance: undefined,
     transactions: [],
     isLoading: false,
 };
