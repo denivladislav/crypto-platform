@@ -1,19 +1,38 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { WalletComponent } from './wallet.component';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { signal } from '@angular/core';
+import { CurrenciesStore } from '../../store/currencies-store';
 
-describe('WalletComponent', () => {
+describe('WatchlistComponent', () => {
     let component: WalletComponent;
     let fixture: ComponentFixture<WalletComponent>;
+    let mockCurrenciesStore;
+
+    const mockData: unknown = [];
 
     beforeEach(async () => {
+        mockCurrenciesStore = {
+            currencies: signal([]),
+            isLoading: signal(false),
+            refCurrency: signal('USD'),
+            loadTransactionsByQuery: jasmine.createSpy('loadCurrenciesByQuery').and.callFake(() => {
+                mockCurrenciesStore!.currencies.set(mockData);
+            }),
+        };
+
         await TestBed.configureTestingModule({
-            imports: [WalletComponent],
-        }).compileComponents();
+            imports: [WalletComponent, NoopAnimationsModule, HttpClientTestingModule],
+        })
+            .overrideProvider(CurrenciesStore, { useValue: mockCurrenciesStore })
+            .compileComponents();
 
         fixture = TestBed.createComponent(WalletComponent);
         component = fixture.componentInstance;
-        fixture.detectChanges();
+
+        TestBed.flushEffects();
+        fixture.autoDetectChanges();
     });
 
     it('should create', () => {

@@ -1,1 +1,50 @@
-<p>wallet works!</p>
+<app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
+
+<div [hidden]="isLoading" class="wallet">
+    <div class="wallet__grid">
+        <div class="table">
+            <div class="table__filters">
+                <app-custom-filter
+                    (blurEvent)="applyFilter($event)"
+                ></app-custom-filter>
+
+                <mat-form-field appearance="outline">
+                    <mat-label>Ref currency</mat-label>
+                    <mat-select [(value)]="refCurrency" (selectionChange)="onRefCurrencyChange($event)">
+                        @for (refCurrency of refCurrencies; track refCurrency) {
+                            <mat-option [value]="refCurrency">{{ refCurrency }}</mat-option>
+                        }
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            
+            @if(dataSource.filteredData.length === 0) {
+                <div>No results found. Try updating the filter or reloading the page</div>
+            }
+            
+            <div [hidden]="dataSource.filteredData.length === 0" class="wallet-wrapper">
+                <table mat-table matSort [dataSource]="dataSource">
+
+                    @for (column of currenciesDataColumns; track column) {
+                        <ng-container matColumnDef="{{column}}">
+                            <th mat-header-cell mat-sort-header *matHeaderCellDef> {{column | underscoreToNormalCase | capitalize }} </th>
+                            <td mat-cell *matCellDef="let element"> {{transformValue(column, element[column])}} </td>
+                        </ng-container>
+                    }
+
+                    <tr mat-header-row *matHeaderRowDef="currenciesDataColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: currenciesDataColumns;"></tr>
+                </table>
+
+                <mat-paginator
+                    [pageSizeOptions]="[10, 20]"
+                    showFirstLastButtons
+                ></mat-paginator>
+            </div>
+
+        </div>
+        <div class="transactions">
+            Transactions contents
+        </div>
+    </div>
+</div>
