@@ -21,6 +21,7 @@ const initialState: CurrenciesState = {
 };
 
 export const CurrenciesStore = signalStore(
+    { providedIn: 'root' },
     withState(initialState),
     withMethods((store, currenciesService = inject(CurrenciesService)) => ({
         setRefCurrency(newRefCurrency: RefCurrency): void {

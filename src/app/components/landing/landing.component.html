@@ -18,6 +18,14 @@
         </aside>
         <div class="app-container__content-wrapper">
             <div class="app-container__app-bar">
+                <mat-form-field appearance="outline">
+                    <mat-label>Ref currency</mat-label>
+                    <mat-select [(value)]="refCurrency" (selectionChange)="onRefCurrencyChange($event)">
+                        @for (refCurrency of refCurrencies; track refCurrency) {
+                            <mat-option [value]="refCurrency">{{ refCurrency }}</mat-option>
+                        }
+                    </mat-select>
+                </mat-form-field>
                 <mat-slide-toggle class="app-container__theme-toggle" [checked]="currentTheme === 'light'" (change)="toggleTheme()">{{ currentTheme | capitalize }}</mat-slide-toggle>
             </div>
             <div class="app-container__content">

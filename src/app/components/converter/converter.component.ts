@@ -28,7 +28,7 @@ export const DEFAULT_CURRENCY_FROM_AMOUNT = 1;
         MatIconModule,
         MatButtonModule,
     ],
-    providers: [CurrenciesStore, GetPreciseNumberPipe],
+    providers: [GetPreciseNumberPipe],
     templateUrl: './converter.component.html',
     styleUrl: './converter.component.scss',
 })

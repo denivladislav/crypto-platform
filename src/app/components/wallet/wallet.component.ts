@@ -10,7 +10,6 @@ import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { MatSelectChange, MatSelectModule } from '@angular/material/select';
 import { CapitalizePipe, UnderscoreToNormalCasePipe } from '../../pipes';
 
 @Component({
@@ -25,12 +24,11 @@ import { CapitalizePipe, UnderscoreToNormalCasePipe } from '../../pipes';
         MatSortModule,
         MatFormFieldModule,
         MatInputModule,
-        MatSelectModule,
         UnderscoreToNormalCasePipe,
         CapitalizePipe,
         CustomFilterComponent,
     ],
-    providers: [CurrenciesStore, CurrencyPipe, WalletStore],
+    providers: [CurrencyPipe, WalletStore],
     templateUrl: './wallet.component.html',
     styleUrl: './wallet.component.scss',
 })
@@ -67,11 +65,6 @@ export class WalletComponent implements OnInit, AfterViewInit {
 
     public applyFilter(value: string) {
         this.dataSource.filter = value.trim().toLowerCase();
-    }
-
-    public onRefCurrencyChange({ value }: MatSelectChange) {
-        this.currenciesStore.setRefCurrency(value);
-        this.currenciesStore.loadCurrenciesByQuery(value);
     }
 
     public transformValue(column: string, value: string | number): string | null {

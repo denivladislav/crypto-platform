@@ -11,7 +11,6 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { CustomFilterComponent } from '../../ui';
 import { SharedModule } from '../../modules';
-import { MatSelectChange, MatSelectModule } from '@angular/material/select';
 
 @Component({
     selector: 'app-watchlist',
@@ -25,12 +24,11 @@ import { MatSelectChange, MatSelectModule } from '@angular/material/select';
         MatSortModule,
         MatFormFieldModule,
         MatInputModule,
-        MatSelectModule,
         UnderscoreToNormalCasePipe,
         CapitalizePipe,
         CustomFilterComponent,
     ],
-    providers: [CurrenciesStore, CurrencyPipe, ShortenNumberPipe],
+    providers: [CurrencyPipe, ShortenNumberPipe],
     templateUrl: './watchlist.component.html',
     styleUrl: './watchlist.component.scss',
 })
@@ -55,11 +53,6 @@ export class WatchlistComponent implements OnInit, AfterViewInit, OnDestroy {
             this.refCurrency = this.store.refCurrency();
             this.dataSource.data = this.store.currencies();
         });
-    }
-
-    public onRefCurrencyChange({ value }: MatSelectChange) {
-        this.store.setRefCurrency(value);
-        this.store.loadCurrenciesByQuery(value);
     }
 
     public transformValue(column: string, value: string | number): string | null {

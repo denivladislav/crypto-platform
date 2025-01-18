@@ -7,15 +7,6 @@
                 <app-custom-filter
                     (blurEvent)="applyFilter($event)"
                 ></app-custom-filter>
-
-                <mat-form-field appearance="outline">
-                    <mat-label>Ref currency</mat-label>
-                    <mat-select [(value)]="refCurrency" (selectionChange)="onRefCurrencyChange($event)">
-                        @for (refCurrency of refCurrencies; track refCurrency) {
-                            <mat-option [value]="refCurrency">{{ refCurrency }}</mat-option>
-                        }
-                    </mat-select>
-                </mat-form-field>
             </div>
             
             @if(dataSource.filteredData.length === 0) {
