@@ -5,7 +5,7 @@
 
 .app-container__app-bar {
     display: flex;
-    padding: 1.375rem 1rem;
+    padding: 1rem 1rem 0;
     border-bottom: 1px solid lightgrey;
 }
 
@@ -28,8 +28,12 @@
     }
 }
 
-.app-container__theme-toggle {
+.app-container__currency-switch {
     margin-left: auto;
+}
+
+.app-container__theme-toggle {
+    margin-left: 1rem;
 }
 
 .app-container__content-wrapper {

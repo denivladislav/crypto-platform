@@ -13,7 +13,7 @@
                 <div>No results found. Try updating the filter or reloading the page</div>
             }
             
-            <div [hidden]="dataSource.filteredData.length === 0" class="wallet-wrapper">
+            <div [hidden]="dataSource.filteredData.length === 0" class="table__wrapper">
                 <table mat-table matSort [dataSource]="dataSource">
 
                     @for (column of currenciesDataColumns; track column) {

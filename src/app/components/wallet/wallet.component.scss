@@ -25,6 +25,10 @@
     gap: 1rem;
 }
 
+.table__wrapper {
+    box-shadow: 0 0 10px 5px lightgrey;
+}
+
 .transactions {
     grid-column: span 4;
     border-left: 1px solid lightgrey;

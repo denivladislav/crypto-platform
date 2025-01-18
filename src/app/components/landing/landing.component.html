@@ -18,7 +18,7 @@
         </aside>
         <div class="app-container__content-wrapper">
             <div class="app-container__app-bar">
-                <mat-form-field appearance="outline">
+                <mat-form-field appearance="outline" class="app-container__currency-switch">
                     <mat-label>Ref currency</mat-label>
                     <mat-select [(value)]="refCurrency" (selectionChange)="onRefCurrencyChange($event)">
                         @for (refCurrency of refCurrencies; track refCurrency) {
