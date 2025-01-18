@@ -41,6 +41,7 @@ export class WalletComponent implements OnInit, AfterViewInit {
     public refCurrencies = REF_CURRENCIES;
     public currenciesDataColumns = ['name', 'amount', 'price', 'symbol'];
     public dataSource = new MatTableDataSource<Asset>([]);
+    public portfolioSum?: number;
     public refCurrency?: RefCurrency;
 
     @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator | undefined;
@@ -51,11 +52,15 @@ export class WalletComponent implements OnInit, AfterViewInit {
             this.refCurrency = this.currenciesStore.refCurrency();
             const assets = this.walletStore.assets();
             const currencies = this.currenciesStore.currencies();
-            this.dataSource.data = assets.map((asset) => {
+            const assetsWithPrice = assets.map((asset) => {
                 const currency = currencies.find((currency) => currency.id === asset.id);
                 const price = currency?.price || 0;
                 return { price: asset.amount * price, ...asset };
             });
+            this.dataSource.data = assetsWithPrice;
+            this.portfolioSum = assetsWithPrice.reduce((acc, assetWithPrice) => {
+                return (acc += assetWithPrice.price);
+            }, 0);
         });
     }
 
