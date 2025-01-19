@@ -98,7 +98,7 @@ describe('ConverterComponent', () => {
 
         expect(component.converterForm.controls.currencyFromAmount.invalid).toBeTrue();
         const errorEl = fixture.nativeElement.querySelector('mat-error');
-        expect(errorEl.textContent).toBe('Must be natural number');
+        expect(errorEl.textContent).toBe('Must be positive number');
     });
 
     it('should show error when currency is incorrect', async () => {

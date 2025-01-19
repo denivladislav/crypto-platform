@@ -14,7 +14,7 @@
                     (blur)="onChange()"
                 />
                 @if (converterForm.controls.currencyFromAmount.hasError('required') || converterForm.controls.currencyFromAmount.hasError('min')) {
-                    <mat-error>Must be natural number</mat-error>
+                    <mat-error>Must be positive number</mat-error>
                 }
             </mat-form-field>
             <div class="converter-form__from-to-wrapper">
