@@ -135,7 +135,7 @@
                 }
             </div>
 
-            @for (transaction of transactions.reverse(); track transaction) {
+            @for (transaction of sortedTransactions; track transaction) {
                 <div class="transaction">
                     <p>{{ transaction.type | capitalize }}: {{ transaction.asset.name}}</p>
                     <p>Amount: {{ transaction.asset.amount }}</p>
