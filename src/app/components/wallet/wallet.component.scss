@@ -33,3 +33,31 @@
     grid-column: span 4;
     border-left: 1px solid lightgrey;
 }
+
+.transactions__operations {
+    padding: 1rem;
+    border-bottom: 1px solid lightgrey;
+}
+
+.transactions__operations-toggle-group {
+    margin-bottom: 1rem;
+}
+
+.transaction-form__form-field-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.transaction-form__submit {
+    background: lightblue;
+}
+
+.transactions__header {
+    padding: 0.5rem;
+}
+
+.transaction {
+    padding: 0.25rem;
+    border-bottom: 1px solid lightgrey;
+}

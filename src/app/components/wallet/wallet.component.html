@@ -4,7 +4,7 @@
     <div class="wallet__grid">
         <div class="table">
             @if(dataSource.filteredData.length !== 0) {
-                <p>Portfolio value: {{ portfolioSum | currency }}</p>
+                <h5>Portfolio value: {{ portfolioSum | currency }}</h5>
             }
 
             <div class="table__filters">
@@ -41,7 +41,107 @@
 
         </div>
         <div class="transactions">
-            Transactions contents
+            <div class="transactions__operations">
+                <mat-button-toggle-group class="transactions__operations-toggle-group" [value]="currentOperation">
+                    @for (operation of operations; track operation) {
+                        <mat-button-toggle (change)="onOperationChange($event.value)" [value]="operation">
+                            {{ operation | capitalize }}
+                        </mat-button-toggle>
+                    }
+                </mat-button-toggle-group>
+
+                @if (currentOperation === 'buy') {
+                    <form #formDirective="ngForm" [formGroup]="transactionPurchaseForm" class="transaction-form" (ngSubmit)="onPurchaseSubmit(formDirective)">
+                        <div class="transaction-form__form-field-wrapper">
+                            <mat-form-field appearance="outline" id="amount">
+                                <mat-label>Amount:</mat-label>
+                                <input
+                                    matInput
+                                    [formControl]="transactionPurchaseForm.controls.amount"
+                                    type="number"
+                                    name="amountInput"
+                                    placeholder="Type amount"
+                                />
+                                @if (transactionPurchaseForm.controls.amount.hasError('required') || transactionPurchaseForm.controls.amount.hasError('min')) {
+                                    <mat-error>Must be positive number</mat-error>
+                                }
+                                @if (transactionPurchaseForm.controls.amount.hasError('amountOverSupply')) {
+                                    <mat-error>Circulating supply exceeded</mat-error>
+                                }
+                            </mat-form-field>
+                            <mat-form-field appearance="outline">
+                                <mat-label>Currency:</mat-label>
+                                <mat-select [formControl]="transactionPurchaseForm.controls.currency">
+                                    @for (currency of currencies; track currency) {
+                                        <mat-option [value]="currency">{{ currency.symbol }}</mat-option>
+                                    }
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                        <button
+                            mat-button
+                            type="submit"
+                            class="transaction-form__submit"
+                        >
+                            {{ currentOperation | capitalize }}
+                        </button>
+                    </form>
+                }
+                
+                @if (currentOperation === 'sell') {
+                    <form #formDirective="ngForm" [formGroup]="transactionTradeForm" class="transaction-form" (ngSubmit)="onTradeSubmit(formDirective)">
+                        <div class="transaction-form__form-field-wrapper">
+                            <mat-form-field appearance="outline" id="amount">
+                                <mat-label>Amount:</mat-label>
+                                <input
+                                    matInput
+                                    [formControl]="transactionTradeForm.controls.amount"
+                                    type="number"
+                                    name="amountInput"
+                                    placeholder="Type amount"
+                                />
+                                @if (transactionTradeForm.controls.amount.hasError('required') || transactionTradeForm.controls.amount.hasError('min')) {
+                                    <mat-error>Must be positive number</mat-error>
+                                }
+                                @if (transactionTradeForm.controls.amount.hasError('amountOverAsset')) {
+                                    <mat-error>Asset exceeded</mat-error>
+                                }
+                            </mat-form-field>
+                            <mat-form-field appearance="outline">
+                                <mat-label>Asset:</mat-label>
+                                <mat-select [formControl]="transactionTradeForm.controls.asset">
+                                    @for (asset of assets; track asset) {
+                                        <mat-option [value]="asset">{{ asset.symbol }}</mat-option>
+                                    }
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                        <button
+                            mat-button
+                            type="submit"
+                            class="transaction-form__submit"
+                        >
+                            {{ currentOperation | capitalize }}
+                        </button>
+                    </form>
+                }
+            </div>
+
+            <div class="transactions__header">
+                @if(transactions.length === 0) {
+                    <div>No transactions found</div>
+                } @else {
+                    <h5>Transactions</h5>
+                }
+            </div>
+
+            @for (transaction of transactions.reverse(); track transaction) {
+                <div class="transaction">
+                    <p>{{ transaction.type | capitalize }}: {{ transaction.asset.name}}</p>
+                    <p>Amount: {{ transaction.asset.amount }}</p>
+                    <p>On: {{ transaction.timestamp | date:'medium' }}</p>
+                </div>
+            }
         </div>
     </div>
 </div>

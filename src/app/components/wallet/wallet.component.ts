@@ -3,14 +3,25 @@ import { LoadingSpinnerComponent } from '../loading-spinner/loading-spinner.comp
 import { CurrenciesStore, REF_CURRENCIES, RefCurrency, WalletStore } from '../../store';
 import { CommonModule, CurrencyPipe } from '@angular/common';
 import { SharedModule } from '../../modules';
-import { Asset } from '../../services';
+import { Asset, AssetRaw, Currency, Transaction } from '../../services';
 import { CustomFilterComponent } from '../../ui';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { CapitalizePipe, UnderscoreToNormalCasePipe } from '../../pipes';
+import {
+    FormControl,
+    FormGroup,
+    FormGroupDirective,
+    FormsModule,
+    ReactiveFormsModule,
+    Validators,
+} from '@angular/forms';
+import { MatSelectModule } from '@angular/material/select';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
     selector: 'app-wallet',
@@ -24,6 +35,13 @@ import { CapitalizePipe, UnderscoreToNormalCasePipe } from '../../pipes';
         MatSortModule,
         MatFormFieldModule,
         MatInputModule,
+        MatButtonModule,
+        MatButtonToggleModule,
+        FormsModule,
+        ReactiveFormsModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatSelectModule,
         UnderscoreToNormalCasePipe,
         CapitalizePipe,
         CustomFilterComponent,
@@ -40,7 +58,13 @@ export class WalletComponent implements OnInit, AfterViewInit {
 
     public refCurrencies = REF_CURRENCIES;
     public currenciesDataColumns = ['name', 'amount', 'price', 'symbol'];
+    public operations = ['buy', 'sell'];
+    public currentOperation = this.operations[0];
     public dataSource = new MatTableDataSource<Asset>([]);
+
+    public currencies: Currency[] = [];
+    public transactions: Transaction[] = [];
+    public assets: Asset[] = [];
     public portfolioSum?: number;
     public refCurrency?: RefCurrency;
 
@@ -50,10 +74,11 @@ export class WalletComponent implements OnInit, AfterViewInit {
     constructor() {
         effect(() => {
             this.refCurrency = this.currenciesStore.refCurrency();
-            const assets = this.walletStore.assets();
-            const currencies = this.currenciesStore.currencies();
-            const assetsWithPrice = assets.map((asset) => {
-                const currency = currencies.find((currency) => currency.id === asset.id);
+            this.transactions = this.walletStore.transactions();
+            this.currencies = this.currenciesStore.currencies();
+            this.assets = this.walletStore.assets();
+            const assetsWithPrice = this.assets.map((asset) => {
+                const currency = this.currencies.find((currency) => currency.id === asset.id);
                 const price = currency?.price || 0;
                 return { price: asset.amount * price, ...asset };
             });
@@ -64,8 +89,32 @@ export class WalletComponent implements OnInit, AfterViewInit {
         });
     }
 
+    public transactionPurchaseForm = new FormGroup<{
+        amount: FormControl<number | null>;
+        currency: FormControl<Currency | null>;
+    }>({
+        amount: new FormControl(null, [Validators.required, Validators.min(0)]),
+        currency: new FormControl(null, [Validators.required]),
+    });
+
+    public transactionTradeForm = new FormGroup<{
+        amount: FormControl<number | null>;
+        asset: FormControl<Asset | null>;
+    }>({
+        amount: new FormControl(null, [Validators.required, Validators.min(0)]),
+        asset: new FormControl(null, [Validators.required]),
+    });
+
     public get isLoading() {
         return this.currenciesStore.isLoading() || this.walletStore.isLoading();
+    }
+
+    public setCurrentOperation(value: string) {
+        this.currentOperation = value;
+    }
+
+    public onOperationChange(value: string) {
+        this.setCurrentOperation(value);
     }
 
     public applyFilter(value: string) {
@@ -80,8 +129,103 @@ export class WalletComponent implements OnInit, AfterViewInit {
         return String(value);
     }
 
+    public onPurchaseSubmit(formDirective: FormGroupDirective): void {
+        const pickedCurrency = this.currencies.find(
+            (currency) => currency.symbol === this.transactionPurchaseForm.value.currency?.symbol,
+        );
+
+        if (!pickedCurrency || !this.transactionPurchaseForm.value.amount) {
+            return;
+        }
+
+        const amount = this.transactionPurchaseForm.value.amount;
+
+        if (this.currentOperation === 'buy') {
+            if (pickedCurrency.circulating_supply < amount) {
+                this.transactionPurchaseForm.controls.amount.setErrors({ amountOverSupply: true });
+                return;
+            }
+        }
+
+        const existingAsset = this.assets.find(
+            (asset) => asset.symbol === this.transactionPurchaseForm.value.currency?.symbol,
+        );
+
+        let isExistingAsset = false;
+        let newAsset: AssetRaw;
+        if (existingAsset) {
+            newAsset = {
+                ...existingAsset,
+                amount: existingAsset.amount + amount,
+                id: String(existingAsset.id),
+            };
+            isExistingAsset = true;
+        } else {
+            newAsset = {
+                ...pickedCurrency,
+                amount,
+                id: String(pickedCurrency.id),
+            };
+        }
+
+        this.walletStore.postTransaction({
+            transaction: {
+                id: String(this.transactions[this.transactions.length - 1].id + 1),
+                type: 'purchased',
+                timestamp: new Date().getTime(),
+                asset: {
+                    ...pickedCurrency,
+                    amount,
+                },
+            },
+            asset: newAsset,
+            isExistingAsset,
+        });
+
+        formDirective.resetForm();
+    }
+
+    public onTradeSubmit(formDirective: FormGroupDirective): void {
+        const pickedAsset = this.assets.find((asset) => asset.symbol === this.transactionTradeForm.value.asset?.symbol);
+
+        if (!pickedAsset || !this.transactionTradeForm.value.amount) {
+            return;
+        }
+
+        const amount = this.transactionTradeForm.value.amount;
+
+        if (this.currentOperation === 'sell') {
+            if (pickedAsset.amount < amount) {
+                this.transactionTradeForm.controls.amount.setErrors({ amountOverAsset: true });
+                return;
+            }
+        }
+
+        const newAsset = {
+            ...pickedAsset,
+            amount: pickedAsset.amount - amount,
+            id: String(pickedAsset.id),
+        };
+
+        this.walletStore.postTransaction({
+            transaction: {
+                id: String(this.transactions[this.transactions.length - 1].id + 1),
+                type: 'traded',
+                timestamp: new Date().getTime(),
+                asset: {
+                    ...pickedAsset,
+                    amount,
+                },
+            },
+            asset: newAsset,
+            isExistingAsset: true,
+        });
+
+        formDirective.resetForm();
+    }
+
     public ngOnInit(): void {
-        this.walletStore.loadAssetsByQuery('');
+        this.walletStore.loadAssetsAndTransactionsByQuery('');
         this.currenciesStore.loadCurrenciesByQuery(this.currenciesStore.refCurrency());
     }
 
