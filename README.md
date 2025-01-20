@@ -4,28 +4,37 @@
 [![Maintainability](https://api.codeclimate.com/v1/badges/a7e2c9040819c4047121/maintainability)](https://codeclimate.com/github/denivladislav/crypto-platform/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/a7e2c9040819c4047121/test_coverage)](https://codeclimate.com/github/denivladislav/crypto-platform/test_coverage)
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.1.3.
+json-server backend:
+https://github.com/denivladislav/crypto-platform-backend
 
-## Development server
+This cryptocurrency app consists of three parts – Watchlist, Converter and Wallet.
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+The app uses CoinMarketApi to retrieve the currencies data and json-server for Wallet assets and transactions.
 
-## Code scaffolding
+https://github.com/user-attachments/assets/38d9fcf9-92fe-40b6-ad4f-1428f51263e3
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+### Stack
+- Angular 18, NgRx, RxJS, Angular Material, Karma + Jasmine
+- ESLint, stylelint, htmlhint, prettier, husky
 
-## Build
+### How To Use Locally:
+```bash
+# Install Dependencies.
+$ npm run install
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+# Build Project.
+$ make build
 
-## Running unit tests
+# Develop.
+$ npm run start
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+# Lint.
+$ npm run lint
+```
 
-## Running end-to-end tests
+### Deploy
+This app is deployed to Vercel.
+https://crypto-platform-ashen.vercel.app/
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+The backend (json-server) is also deployed to Vercel.
+https://crypto-platform-backend.vercel.app/
