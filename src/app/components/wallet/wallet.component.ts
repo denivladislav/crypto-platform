@@ -64,7 +64,6 @@ export class WalletComponent implements OnInit, AfterViewInit {
 
     public currencies: Currency[] = [];
     public transactions: Transaction[] = [];
-    public sortedTransactions: Transaction[] = [];
     public assets: Asset[] = [];
     public portfolioSum?: number;
     public refCurrency?: RefCurrency;
@@ -76,7 +75,6 @@ export class WalletComponent implements OnInit, AfterViewInit {
         effect(() => {
             this.refCurrency = this.currenciesStore.refCurrency();
             this.transactions = this.walletStore.transactions();
-            this.sortedTransactions = this.transactions.reverse();
             this.currencies = this.currenciesStore.currencies();
             this.assets = this.walletStore.assets();
             const assetsWithPrice = this.assets.map((asset) => {
