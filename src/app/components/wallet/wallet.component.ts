@@ -170,9 +170,11 @@ export class WalletComponent implements OnInit, AfterViewInit {
             };
         }
 
+        const newTransactionId = (Math.max(...this.transactions.map((transaction) => transaction.id)) + 1).toString();
+
         this.walletStore.postTransaction({
             transaction: {
-                id: String(this.transactions[this.transactions.length - 1].id + 1),
+                id: newTransactionId,
                 type: 'purchased',
                 timestamp: new Date().getTime(),
                 asset: {
