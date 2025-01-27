@@ -9,7 +9,7 @@ https://github.com/denivladislav/crypto-platform-backend
 
 This cryptocurrency app consists of three parts – Watchlist, Converter and Wallet.
 
-The app uses CoinMarketApi to retrieve the currencies data and json-server for Wallet assets and transactions.
+The app uses CoinMarketCap api to retrieve the currencies data and json-server api for Wallet assets and transactions.
 
 https://github.com/user-attachments/assets/38d9fcf9-92fe-40b6-ad4f-1428f51263e3
 
